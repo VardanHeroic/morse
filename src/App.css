@@ -1,9 +1,22 @@
 .App {
+    padding: 10px;
   text-align: center;
+  width: 50vw;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap
 }
 .sound{
 font-variant-numeric: tabular-nums;
+text-align: left;
 }
+.inputs{
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+
 .sound span{
     display: inline-block;
     width: 3em;

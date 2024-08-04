@@ -16,8 +16,10 @@ function App() {
     }
     return (
         <div className="App">
-            <TextInput {...props} />
-            <MorseInput {...props} />
+            <div className="inputs">
+                <TextInput {...props} />
+                <MorseInput {...props} />
+            </div>
             <Sound morse={morse} />
         </div>
     );
