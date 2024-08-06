@@ -33,9 +33,9 @@ export default function Sound({ morse }: { morse: string }) {
     };
 
     useEffect(() => {
-        async function morse() {
-            console.log(looping);
-
+        console.log(stop);
+        let loopStop = false
+        async function Mainmorse() {
             if (!play) {
                 return
             }
@@ -44,17 +44,21 @@ export default function Sound({ morse }: { morse: string }) {
                 setPlay(false)
                 return
             }
+
             while (true) {
-                await playMorse()
-                await playSound(7*unit,0)
-                if (stop) {
-                   break
+                if(loopStop){
+                    break
                 }
+                await playMorse()
+                await playSound(7 * unit, 0)
             }
-            setPlay(false)
 
         }
-        morse()
+        Mainmorse()
+        return () => {
+            loopStop = true
+        }
+
     }, [play])
 
     const playMorse = async () => {
@@ -70,11 +74,11 @@ export default function Sound({ morse }: { morse: string }) {
     return (
         <div className="sound">
             <label>Pitch</label><br />
-            <input type="range" onInput={(e: any) => { setFreq(e.target.value) }} min={300} value={freq} max={800} /><span>{freq+'Hz'}</span><br />
+            <input type="range" onInput={(e: any) => { setFreq(e.target.value) }} min={300} value={freq} max={800} /><span>{freq + 'Hz'}</span><br />
             <label>Unit(in ms)</label><br />
-            <input type="range" onInput={(e: any) => { setUnit(e.target.value) }} min={20} value={unit} max={200} /><span>{unit+'ms'}</span><br />
-            <input type="checkbox" onInput={() => { setLooping(!looping) }}></input> <label>Looping</label><br/><br/>
-            <button onClick={!play ? () => { setPlay(true) } : () => { setPlay(false); stop = true }}>{play ? "Stop" : "Play"}</button>
+            <input type="range" onInput={(e: any) => { setUnit(e.target.value) }} min={20} value={unit} max={200} /><span>{unit + 'ms'}</span><br />
+            <input type="checkbox" onInput={() => { setLooping(!looping) }}></input> <label>Looping</label><br /><br />
+            <button onClick={!play ? () => { setPlay(true) } : () => { stop = true; setPlay(false) }}>{play ? "Stop" : "Play"}</button>
         </div>
     )
 }
