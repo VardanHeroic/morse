@@ -11,17 +11,16 @@ const MorseInput: React.FC<ChildProps> = ({ setText, setMorse, morse }) => {
         return Object.keys(mapping).find(key => mapping[key as keyof Object].toString() === value);
     };
 
-    function handleChange(e:React.ChangeEvent<HTMLInputElement>) {
-        setMorse(e.target.value)
-        const result = e.target.value.trim().split(' ').map(morse => getKeyByValue(morse))
+    function handleChange(e:React.FormEvent<HTMLTextAreaElement>) {
+        const target = e.target as HTMLTextAreaElement
+        setMorse(target.value)
+        const result = target.value.trim().replace(/\s+/g, ' ').split(' ').map(morse => getKeyByValue(morse))
         setText(result.every(letter => letter) ? result.join('') : '#')
     }
 
 
     return (
-        <div>
-            <input type="text" onInput={handleChange} value={morse} />
-        </div>
+            <textarea placeholder='There should be morse' onInput={handleChange} value={morse} />
     )
 }
 export default MorseInput
