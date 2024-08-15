@@ -19,7 +19,8 @@ export default function Sound({ morse }: { morse: string }) {
     }
 
     const playSound = async (time: number, freq: number) => {
-        console.log(gainNodeRef.current.gain);
+        // console.log(gainNodeRef.current.gain);
+        console.log(looping);
 
         return new Promise((resolve) => {
             if (stop) {
@@ -36,11 +37,12 @@ export default function Sound({ morse }: { morse: string }) {
     };
 
     useEffect(() => {
+        // console.log(stop,play);
+
         if (!isStartedRef.current && oscillatorRef.current) {
             oscillatorRef.current.start();
             isStartedRef.current = true
         }
-        let loopStop = false
         async function Mainmorse() {
             if (!play) {
                 return
@@ -52,7 +54,7 @@ export default function Sound({ morse }: { morse: string }) {
             }
 
             while (true) {
-                if (loopStop) {
+                if (stop) {
                     break
                 }
                 await playMorse()
@@ -62,7 +64,7 @@ export default function Sound({ morse }: { morse: string }) {
         }
         Mainmorse()
         return () => {
-            loopStop = true
+            stop = true;
         }
 
     }, [play])
@@ -75,10 +77,8 @@ export default function Sound({ morse }: { morse: string }) {
             await playSound(timing[char as keyof object][0] * unit, timing[char as keyof object][1] * freq)
 
         }
-        stop = false
     }
     useEffect(() => {
-        console.log(volume);
         audioContextRef.current = new window.AudioContext()
         gainNodeRef.current =  audioContextRef.current.createGain()
         oscillatorRef.current = audioContextRef.current.createOscillator()
@@ -96,7 +96,7 @@ export default function Sound({ morse }: { morse: string }) {
             <label>Unit(in ms)</label><br />
             <input type="range" onInput={(e: any) => { setUnit(e.target.value) }} min={20} value={unit} max={200} /><span>{unit + 'ms'}</span><br />
             <input type="checkbox" onInput={() => { setLooping(!looping) }}></input> <label>Looping</label><br /><br />
-            <button onClick={!play ? () => { setPlay(true) } : () => { stop = true; setPlay(false) }}>{play ? "Stop" : "Play"}</button>
+            <button onClick={() => { setPlay(!play) }}>{play ? "Stop" : "Play"}</button>
         </div>
     )
 }
