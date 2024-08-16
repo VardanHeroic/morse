@@ -5,14 +5,16 @@ interface ChildProps {
     setMorse: React.Dispatch<React.SetStateAction<string>>
 }
 
-const TextInput: React.FC<ChildProps> = ({ setText, text, setMorse}) => {
-    function handleChange(e:React.FormEvent<HTMLTextAreaElement>) {
+const TextInput: React.FC<ChildProps> = ({ setText, text, setMorse }) => {
+    function handleChange(e: React.FormEvent<HTMLTextAreaElement>) {
         const target = e.target as HTMLTextAreaElement
-       setMorse(target.value.replace(/\s+/g, ' ').toUpperCase().split('').map(char => mapping[char as keyof object]).join(' '))
-       setText(target.value)
+        const result = target.value.replace(/\s+/g, ' ').toUpperCase().split('').map(char => mapping[char as keyof object])
+        setMorse(result.every(letter => letter) ? result.join(' ') : '#')
+
+        setText(target.value)
     }
     return (
-            <textarea placeholder='There should be text' onInput={handleChange} value={text}></textarea>
+        <textarea placeholder='There should be text' onInput={handleChange} value={text}></textarea>
     )
 }
 export default TextInput

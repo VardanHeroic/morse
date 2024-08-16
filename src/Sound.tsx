@@ -1,4 +1,4 @@
-import { useState, useEffect,useRef } from "react"
+import { useState, useEffect, useRef } from "react"
 
 export default function Sound({ morse }: { morse: string }) {
     const [unit, setUnit] = useState(55)
@@ -6,10 +6,10 @@ export default function Sound({ morse }: { morse: string }) {
     const [play, setPlay] = useState(false)
     const [looping, setLooping] = useState(false)
     const [volume, setVolume] = useState(50)
-    const audioContextRef:any = useRef(null);
-    const gainNodeRef:any = useRef(null);
-    const oscillatorRef:any = useRef(null)
-    const isStartedRef:any = useRef(false)
+    const audioContextRef: any = useRef(null);
+    const gainNodeRef: any = useRef(null);
+    const oscillatorRef: any = useRef(null)
+    const isStartedRef: any = useRef(false)
     let stop = false
     const timing = {
         ' ': [3, 0],
@@ -19,9 +19,6 @@ export default function Sound({ morse }: { morse: string }) {
     }
 
     const playSound = async (time: number, freq: number) => {
-        // console.log(gainNodeRef.current.gain);
-        console.log(looping);
-
         return new Promise((resolve) => {
             if (stop) {
                 return;
@@ -37,8 +34,6 @@ export default function Sound({ morse }: { morse: string }) {
     };
 
     useEffect(() => {
-        // console.log(stop,play);
-
         if (!isStartedRef.current && oscillatorRef.current) {
             oscillatorRef.current.start();
             isStartedRef.current = true
@@ -80,9 +75,9 @@ export default function Sound({ morse }: { morse: string }) {
     }
     useEffect(() => {
         audioContextRef.current = new window.AudioContext()
-        gainNodeRef.current =  audioContextRef.current.createGain()
+        gainNodeRef.current = audioContextRef.current.createGain()
         oscillatorRef.current = audioContextRef.current.createOscillator()
-        gainNodeRef.current.gain.setValueAtTime(volume/100,audioContextRef.current.currentTime )
+        gainNodeRef.current.gain.setValueAtTime(volume / 100, audioContextRef.current.currentTime)
         oscillatorRef.current.type = 'sine'
     }, [])
 
@@ -90,7 +85,7 @@ export default function Sound({ morse }: { morse: string }) {
     return (
         <div className="sound">
             <label>Volume</label><br />
-            <input type="range" onInput={(e: any) => { setVolume(e.target.value);gainNodeRef.current.gain.setValueAtTime(+e.target.value/100,audioContextRef.current.currentTime )   }} min={0} value={volume} max={100} /><span>{volume + '%'}</span><br />
+            <input type="range" onInput={(e: any) => { setVolume(e.target.value); gainNodeRef.current.gain.setValueAtTime(+e.target.value / 100, audioContextRef.current.currentTime) }} min={0} value={volume} max={100} /><span>{volume + '%'}</span><br />
             <label>Pitch</label><br />
             <input type="range" onInput={(e: any) => { setFreq(e.target.value) }} min={300} value={freq} max={800} /><span>{freq + 'Hz'}</span><br />
             <label>Unit(in ms)</label><br />

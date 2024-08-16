@@ -7,11 +7,11 @@ interface ChildProps {
 }
 
 const MorseInput: React.FC<ChildProps> = ({ setText, setMorse, morse }) => {
-    const getKeyByValue = (value:string) => {
+    const getKeyByValue = (value: string) => {
         return Object.keys(mapping).find(key => mapping[key as keyof Object].toString() === value);
     };
 
-    function handleChange(e:React.FormEvent<HTMLTextAreaElement>) {
+    function handleChange(e: React.FormEvent<HTMLTextAreaElement>) {
         const target = e.target as HTMLTextAreaElement
         setMorse(target.value)
         const result = target.value.trim().replace(/\s+/g, ' ').split(' ').map(morse => getKeyByValue(morse))
@@ -20,7 +20,7 @@ const MorseInput: React.FC<ChildProps> = ({ setText, setMorse, morse }) => {
 
 
     return (
-            <textarea placeholder='There should be morse' onInput={handleChange} value={morse} />
+        <textarea placeholder='There should be morse' onInput={handleChange} value={morse} />
     )
 }
 export default MorseInput
